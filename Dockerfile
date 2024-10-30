@@ -1,12 +1,14 @@
-# Stage 1: Build the application
-FROM maven:3.8.6-openjdk-11 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package
+# Use the official Tomcat base image
+FROM tomcat:9.0.96
 
-# Stage 2: Deploy the application
-FROM tomcat:9.0.96-jdk11
-COPY --from=build /app/target/javatest-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/app.war
+# Remove default web apps
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Expose port 8080 (default for Tomcat)
+# Copy your WAR file into the Tomcat webapps directory as ROOT.war
+COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
+
+# Expose the port Tomcat is running on
 EXPOSE 8080
+
+# Start Tomcat (this is done by default in the base image)
+CMD ["catalina.sh", "run"]
