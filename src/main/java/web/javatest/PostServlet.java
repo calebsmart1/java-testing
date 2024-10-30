@@ -13,20 +13,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet for ErrorExampleServlet.
+ * Servlet for PostServlet.
  * @author caleb
  */
-@WebServlet(name="ErrorExampleServlet", urlPatterns={"/exception"})
-public class ErrorExampleServlet extends HttpServlet {
+@WebServlet(name="PostServlet", urlPatterns={"/post"})
+public class PostServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        throw new NullPointerException();
+        // Handle GET request
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String text = request.getParameter("text");
+        response.setContentType("text/html");
+        response.getWriter().println("You entered: " + text);
     }
 }
